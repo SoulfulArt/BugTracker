@@ -1,0 +1,572 @@
+<!DOCTYPE HTML>
+<!--
+   Spectral by HTML5 UP
+   html5up.net | @ajlkn
+   Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+   -->
+<html>
+
+   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+   <link rel="stylesheet" href="http://fortawesome.github.io/Font-Awesome/assets/font-awesome/css/font-awesome.css">
+
+   <head>
+      {% load static %}
+      <title>Bug Tracker - SoulfulArt Productions</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <!--[if lte IE 8]><script src="% static 'ie/html5shiv.js' %"></script><![endif]-->
+      <link rel="stylesheet" type = "text/css" href="{% static 'main.css' %}" />
+      <!--[if lte IE 8]>
+      <link rel="stylesheet" type = "text/css" href="{% static 'ie8.css'%}" />
+      <![endif]-->
+      <!--[if lte IE 8]>
+      <link rel="stylesheet" type = "text/css" href="{% static 'ie9.css'%}" />
+      <![endif]-->
+   </head>
+   <body>
+      <!-- Page Wrapper -->
+      <div id="page-wrapper">
+      <!-- Header -->
+      <header id="header">
+         <h1><a href="http://127.0.0.1:8000/">SoulfulArt Platform</a></h1>
+         <nav id="nav">
+            <ul>
+               <li class="special">
+                  <a href="#menu" class="menuToggle"><span>Menu</span></a>
+                  <div id="menu">
+                     <ul>
+                        <li><a href="http://127.0.0.1:8000/">Home</a></li>
+                        <li><a href="/User_Platform/UserPage">Your Page!</a></li>
+                        <li><a href="/SignOut">Sign Out</a></li>
+                        <li><a href="/User_Platform/UserPage">Profile</a></li>
+                     </ul>
+                  </div>
+               </li>
+            </ul>
+         </nav>
+      </header>
+      <!-- Main -->
+      <article id="main">
+         <header>
+            <h2>Bug Tracker</h2>
+            <p>Welcome to Bug Tracker page. Here you can see all the bugs of our products and services.</p>
+         </header>
+         <section class="wrapper style5">
+         <div class="inner">
+            <section>
+               <h3>All Bugs</h3>
+               <div class="row uniform">
+                  <div class="2u 6u$(xsmall)">
+                     Number of bugs per page
+                  </div>
+
+                  <div class="1u 6u$(xsmall)">
+
+                  <form
+                  action="update_form"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                  {% csrf_token %}
+
+                        <select
+                           name="bugs_per_page"
+                           id="bugs_per_page"
+                           onchange="form.submit()">
+                           <option value={{bugs_per_page}} hidden>{{bugs_per_page}}</option>
+                           <option value="5">5</option>
+                           <option value="10">10</option>
+                           <option value="15">15</option>
+                           <option value="20">20</option>
+                           <option value="50">50</option>
+                        </select>
+                  </div>
+
+                  <div class="1u$ 6u$(xsmall)" {{show_clean_filter}}>
+                  <input class="button"
+                  name="clean_filter"
+                  Value="Clean Filter"
+                  type="submit">
+                  </div>
+
+               </div>
+               <div class="table-wrapper">
+               <table class="alt">
+               <thead>
+               <tr>
+               <th>
+               <input
+               type="checkbox"
+               id="select-all-bug"
+               name="select-all-bug"
+               onchange="form.submit()"
+               {{select_all_bug}}>
+               <label for="select-all-bug"></label>
+               </th>
+               <th>Name</th>
+               <th>Project</th>
+               <th>Creation Date</th>
+               <th>Execution [Minutes]</th>
+               <th>Priority</th>
+               <th>Created By</th>
+               <th>Owner</th>
+               <th>Conclusion Date</th>
+               <th>Status</th>
+               <th>Description</th>
+               <th>Conclusion Description</th>
+               <th>Impact Other Projects</th>
+               <th>Files</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr>
+               <p>{% if bugs_showed %}
+               {% for bug in bugs_showed %}
+               <td>
+               <input
+               type="checkbox"
+               name="{{bug.id}}"
+               id="{{bug.id}}"
+               {{select_all_bug}}
+               >
+               <label for="{{bug.id}}"></label>
+               </td>
+               <td>{{bug.bug_name|default:"-"}}</td>
+               <td>{{bug.bug_project.project_name|default:"-"}}</td>
+               <td>{{bug.bug_creation_date|date:"d/M/Y"}}</td>
+               <td>{{bug.bug_time_execution|default:"-"}}</td>
+               <td>{{bug.bug_priority|default:"-"}}</td>
+               <td>{{bug.bug_creator.user_name|default:"-"}}</td>
+               <td>{{bug.bug_owner.user_name|default:"-"}}</td>
+               <td>{{bug.bug_conclusion_date|default:"-"}}</td>
+               <td>{{bug.bug_status|default:"-"}}</td>
+               <td>{{bug.bug_description|truncatechars:max_char_desc|default:"-"}}</td>
+               <td>{{bug.bug_conclusion_description|truncatechars:max_char_desc|default:"-"}}</td>
+               <td>{{bug.bug_impact_other_projects}}</td>
+               <td><a
+               target="_blank"
+               href="download/{{bug.id}}/{{bug.bug_files}}"
+               download>{{bug.bug_files}}</a>
+               </td>
+               </tr>
+               {% endfor %}
+               {% else %}
+               <p>No bugs to show!</p>
+               {% endif %}</p>
+               </tbody>
+               <tfoot>
+               <tr>
+               <td>Page</td>
+               <td>
+               <select
+                  name="select_current_page"
+                  id="current_page"
+                  onchange="form.submit()"
+                  >
+               <option
+                  value={{current_page}}
+                  hidden>{{current_page}}</option>
+               {% for i in number_of_pages|rjust:number_of_pages %}
+               <option
+                  value={{forloop.counter}}>
+               {{forloop.counter}}
+               </option>
+               {% endfor %}
+               </td>
+               <td>of</td>
+               <td>{{number_of_pages}}</td>
+               </tr>
+               <tr>
+               <td colspan="3">Number of bugs listed:</td>
+               <td><h4>{{number_of_bugs}}</h4></td>
+               </tr>
+               </tfoot>
+               </table>
+               </div>
+            </section>
+            <section>
+            <h4>Actions</h4>
+            <ul class="actions">
+            <li><input
+               value="Edit"
+               class="button"
+               name="show_edit_form"
+               type="submit"
+               ></li>
+            <li><input
+            class="button"
+            value="Filter Bugs"
+            name="filter_bug_form"
+            type="submit"
+            ></li>
+            <li><input
+               value="Create New Bug"
+               class="button"
+               name="create_bug_form"
+               type="submit"
+               ></li>
+            <li><input
+               value="Delete"
+               name="del_bug"
+               class="button special"
+               type="submit"></li>
+            </ul>
+            <ul class="actions">
+
+            <!-- Edit Bugs Form Begin-->
+            <h4 {{edit_fields}}>Edit Selected Bugs with</h4>
+            <div class="row uniform" {{edit_fields}}>
+            <div class="4u 12u$(xsmall)">
+            <input type="text" name="bug_name_edit" id="bug_name" value="" placeholder="Bug Name"/>
+            </div>
+            <div class="2u 10u$(xsmall)" {{form_fields.execution_edit}}>
+            <input type="text" name="bug_duration_edit" id="bug_duration" value="" placeholder="Execution"/>
+            </div>
+            <div class="4u$ 12u$(xsmall)">
+            <div class="select-wrapper">
+            <select name="project_id_edit" id="project-id">
+            <option value="0">- Project -</option>
+            <option value="-1">- All -</option>
+            {% for projects in project_list %}
+                <option value={{projects.id}}>
+                {{projects.project_name}}
+                </option>
+            {% endfor %}
+            </select>
+            </div>
+            </div>
+            <div class="4u$ 12u$(small)" {{form_fields.priority_label_edit}}>Priority</div>
+
+            <div class="4u 12u$(small)" {{form_fields.priority_options_edit}}>
+            <input type="radio" id="bug_priority_low_edit" name="bug_priority_edit" value="1">
+            <label for="bug_priority_low_edit">Low</label>
+            </div>
+            <div class="4u 12u$(small)"{{form_fields.priority_options_edit}}>
+            <input type="radio" id="bug_priority_normal_edit" name="bug_priority_edit" value="2">
+            <label for="bug_priority_normal_edit">Normal</label>
+            </div>
+            <div class="4u$ 12u$(small)"{{form_fields.priority_options_edit}}>
+            <input type="radio" id="bug_priority_high_edit" name="bug_priority_edit" value="3">
+            <label for="bug_priority_high_edit">High</label>
+            </div>
+
+            <div class="4u$ 12u$(small)" {{form_fields.status_label_edit}}>Status</div>
+
+            <div class="4u 12u$(small)"  {{form_fields.status_options_edit}}>
+            <input type="radio" id="bug_status_new" name="bug_status_edit" value="1">
+            <label for="bug_status_new">New</label>
+            </div>
+            <div class="4u 12u$(small)" {{form_fields.status_options_edit}}>
+            <input type="radio" id="bug_status_working" name="bug_status_edit" value="2">
+            <label for="bug_status_working">Working</label>
+            </div>
+            <div class="4u$ 12u$(small)" {{form_fields.status_options_edit}}>
+            <input type="radio" id="bug_status_concluded" name="bug_status_edit" value="3">
+            <label for="bug_status_concluded">Concluded</label>
+
+            </div>
+
+            <div class="6u$ 12u$(small)" {{form_fields.impact_edit}}>
+            <input type="checkbox"
+            id="impact_project_edit"
+            name="impact_project_edit">
+            <label for="impact_project_edit">Impact other projects?</label>
+            </div>
+
+            <div class="4u$ 12u$(small)"></div><!--jump line-->
+
+            <textarea name="bug_description_edit"
+            id="bug_description_edit"
+            placeholder="Bug Owner Description"
+            rows="6"
+            style={{form_fields.bug_description_edit}}></textarea>
+
+            <div class="4u$ 12u$(small)"></div><!--jump line-->
+
+            <textarea name="bug_conclusion_edit"
+            id="bug_conclusion_edit"
+            placeholder="Bug Conclusion Description"
+            rows="6"
+            style={{form_fields.bug_conclusion_edit}}></textarea>
+
+            <div class="4u 12u$(xsmall)" {{form_fields.creation_date_label}}>
+            Creation Date
+            </div>
+            <div class="4u$ 10u$(xsmall)" {{form_fields.conclusion_date_label}}>
+            Conclusion Date
+            </div>
+
+            <div class="4u 12u$(xsmall)"{{form_fields.creation_date_label}}>
+            <input type="date" name="bug_creation_date" id="bug_creation_date" value=""/>
+            </div>
+            <div class="4u$ 10u$(xsmall)" {{form_fields.conclusion_date_label}}>
+            <input type="date" name="bug_conclusion_date" id="bug_conclusion_date" value=""/>
+            </div>
+
+            <div class="4u 12u$(xsmall)" {{form_fields.bug_owner_edit}}>
+            <div class="select-wrapper">
+            <select name="bug_owner_edit" id="bug_owner_edit">
+            <option value="0">- Bug Owner -</option>
+            <option value="-1">- None -</option>
+            {% for users in user_data %}
+                <option value={{users.id}}>
+                {{users.user_name}}
+                </option>
+            {% endfor %}
+            </select>
+            </div>
+            </div>
+
+            <div class="4u$ 12u$(xsmall)" {{form_fields.bug_creator_edit}}>
+            <div class="select-wrapper">
+            <select name="bug_creator_edit" id="bug_creator_edit">
+            <option value="0">- Bug Creator -</option>
+            <option value="-1">- None -</option>
+            {% for users in user_data %}
+                <option value={{users.id}}>
+                {{users.user_name}}
+                </option>
+            {% endfor %}
+            </select>
+            </div>
+            </div>
+
+            <div class="12u$">
+            <ul class="actions">
+            <li><input type="submit" value="Edit" class="special" name="edit_bug"/></li>
+            <li><input type="submit" value="Cancel" name="cancel_edit_bug"/></li>
+            </ul>
+            </div>
+
+
+            </div>
+            <!-- Edit Bugs Form End-->
+
+            <!-- Create new Bug Form Beging-->
+            <section>
+            <h4 {{new_bug_fields}}>Create New Bug</h4>
+            <div class="row uniform"{{new_bug_fields}}>
+            <div class="6u 12u$(xsmall)">
+            <input type="text" name="bug_name" id="bug_name" value="" placeholder="Bug Name"/>
+            </div>
+            <div class="12u$(xsmall)">
+            <div class="select-wrapper">
+            <select name="project-id" id="project-id">
+            <option value="0">- Project -</option>
+            {% for projects in project_list %}
+            <option value={{projects.id}}>
+            {{projects.project_name}}
+            </option>
+            {% endfor %}
+            </select>
+            </div>
+            </div>
+            <div class="4u 12u$(small)">
+            <input type="radio" id="bug-priority-low" name="bug-priority" checked value="1">
+            <label for="bug-priority-low">Low</label>
+            </div>
+            <div class="4u 12u$(small)">
+            <input type="radio" id="bug-priority-normal" name="bug-priority" value="2">
+            <label for="bug-priority-normal">Normal</label>
+            </div>
+            <div class="4u$ 12u$(small)">
+            <input type="radio" id="bug-priority-high" name="bug-priority" value="3">
+            <label for="bug-priority-high">High</label>
+            </div>
+            <div class="6u 12u$(small)">
+            <input type="checkbox" id="demo-copy" name="demo-copy">
+            <label for="demo-copy">Email me a copy</label>
+            </div>
+            <div class="6u$ 12u$(small)">
+            <input type="checkbox" id="demo-human" name="impact_project">
+            <label for="demo-human">Impact other projects?</label>
+            </div>
+            <div class="12u$">
+            <input type="file"
+            name="file-bug-new"
+            id="file-bug"
+            class="button special icon fa-download"
+            multiple/>
+            <textarea name="bug_description" id="bug-description" placeholder="Bug Description" rows="6"></textarea>
+            </div>
+            <div class="12u$">
+            <ul class="actions">
+            <li><input type="submit" value="Create Bug" class="special" name="create_bug"/></li>
+            <li><input type="reset" value="Reset" /></li>
+            </ul>
+            </div>
+            </div>
+            <!-- Create new Bug Form End-->
+
+            <!-- Filter Bugs Form Begin-->
+            <h4 {{filter_fields}}>Filter Bugs with</h4>
+            <div class="row uniform" {{filter_fields}}>
+
+            <!-- Filter Criteria for duration-->
+            <div class="4u 12u$(xsmall)">
+            </div>
+
+            <div class="2u 12u$(xsmall)">
+            <div class="select-wrapper">
+            <select
+            name="filter_duration_criteria"
+            id="filter_duration_criteria">
+            <option {{filter_values_view.duration_criteria_durationis}}
+            disabled>Duration is</option>
+            <option value="0"
+            {{filter_values_view.duration_criteria_equal}}>Equal</option>
+            <option value="1"
+            {{filter_values_view.duration_criteria_lte}}>Less than or equal</option>
+            <option value="2"
+            {{filter_values_view.duration_criteria_lt}}>Less than</option>
+            <option value="3"
+            {{filter_values_view.duration_criteria_gte}}>Greater than or equal</option>
+            <option value="4"
+            {{filter_values_view.duration_criteria_gt}}>Greater than</option>
+            </select>
+            </div>
+            </div>
+
+            <div class="4u$ 16u$(xsmall)">
+            <pre><code>Project: {{filter_values_view.selected_project}}</pre></code>
+            </div>
+
+            <div class="4u 12u$(xsmall)">
+            <input type="text" name="bug_name_filter"
+            id="bug_name_filter"
+            placeholder="{{filter_values_view.bug_name_filter}}">
+            </div>
+            <div class="2u 10u$(xsmall)">
+            <input type="text"
+            name="bug_duration_filter"
+            id="bug_duration"
+            value=""
+            placeholder="{{filter_values_view.bug_duration_filter}}"/>
+            </div>
+            <div class="4u$ 12u$(xsmall)">
+            <div class="select-wrapper">
+            <select name="project_id_filter" id="project-id">
+            <option selected value="-2" disabled>Select Project</option>
+            <option value="-1">All</option>
+            <option value="0">No Project</option>
+            {% for projects in project_list %}
+                <option value={{projects.id}}>
+                {{projects.project_name}}
+                </option>
+            {% endfor %}
+            </select>
+            </div>
+            </div>
+            <div class="4u$ 12u$(small)">Priority</div>
+            <div class="4u 12u$(small)">
+            <input type="checkbox"
+            id="bug_priority_low_filter"
+            name="bug_priority_filter_low"
+            value="1"
+            {{filter_values_view.bug_priority_filter_low}}>
+            <label for="bug_priority_low_filter">Low</label>
+            </div>
+            <div class="4u 12u$(small)">
+            <input type="checkbox"
+            id="bug_priority_normal_filter"
+            name="bug_priority_filter_normal"
+            value="2"
+            {{filter_values_view.bug_priority_filter_normal}}>
+            <label for="bug_priority_normal_filter">Normal</label>
+            </div>
+            <div class="4u$ 12u$(small)">
+            <input type="checkbox"
+            id="bug_priority_high_filter"
+            name="bug_priority_filter_high"
+            value="3"
+            {{filter_values_view.bug_priority_filter_high}}>
+            <label for="bug_priority_high_filter">High</label>
+            </div>
+            <div class="4u$ 12u$(small)">Status</div>
+            <div class="4u 12u$(small)">
+            <input type="checkbox"
+            id="bug_status_new_filter"
+            name="bug_status_filter_n"
+            value="New"
+            {{filter_values_view.bug_status_filter_n}}>
+            <label for="bug_status_new_filter">New</label>
+            </div>
+            <div class="4u 12u$(small)">
+            <input type="checkbox"
+            id="bug_status_working_filter"
+            name="bug_status_filter_w"
+            value="Working"
+            {{filter_values_view.bug_status_filter_w}}>
+            <label for="bug_status_working_filter">Working</label>
+            </div>
+            <div class="4u$ 12u$(small)">
+            <input type="checkbox"
+            id="bug_status_concluded_filter"
+            name="bug_status_filter_c"
+            value="Concluded"
+            {{filter_values_view.bug_status_filter_c}}>
+            <label for="bug_status_concluded_filter">Concluded</label>
+            </div>
+            <div class="4u 12u$(small)">
+            Impact other projects?
+            </div>
+            <div class="4u 12u$(small)">
+            <input type="checkbox"
+            id="impact_project_filter_yes"
+            name="impact_filter_yes"
+            {{filter_values_view.impact_filter_yes}}>
+            <label for="impact_project_filter_yes">Yes</label>
+            </div>
+            <div class="2u$ 12u$(small)">
+            <input type="checkbox"
+            id="impact_project_filter_no"
+            name="impact_filter_no"
+            {{filter_values_view.impact_filter_no}}>
+            <label for="impact_project_filter_no">No</label>
+            </div>
+            <div class="4u$ 12u$(small)"></div>
+            <textarea name="bug_description_filter"
+            id="bug_description_filter"
+            placeholder="{{filter_values_view.bug_description_filter}}"
+            rows="6"></textarea>
+
+            <div class="12u$">
+            <ul class="actions">
+            <li><input type="submit" value="Filter Apply" class="special" name="filter_bug"/></li>
+            <li><input type="submit" value="Cancel" name="cancel_filter_bug"/></li>
+            </ul>
+            </div>
+
+            </div>
+            <!-- Filter Bugs Form End-->
+
+            </form> <!-- update_form end-->
+
+            </section>
+            </section>
+
+      </article>
+      <!-- Footer -->
+      <footer id="footer">
+      <ul class="icons">
+      <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+      <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+      <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+      <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+      <li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+      </ul>
+      <ul class="copyright">
+      <li>&copy; SoulfulArt Platform</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      </ul>
+      </footer>
+      </div>
+      <!-- Scripts -->
+      <script src="{% static 'jquery.min.js' %}"></script>
+      <script src="{% static 'jquery.scrollex.min.js' %}"></script>
+      <script src="{% static 'jquery.scrolly.min.js' %}"></script>
+      <script src="{% static 'skel.min.js' %}"></script>
+      <script src="{% static 'util.js' %}"></script>
+      <!--[if lte IE 8]><script src="{% static 'ie/respond.min.js' %}"></script><![endif]-->
+      <script src="{% static 'main.js' %}"></script>
+   </body>
+</html>

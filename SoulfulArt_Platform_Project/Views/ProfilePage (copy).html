@@ -1,0 +1,313 @@
+<!DOCTYPE HTML>
+<!--
+   Spectral by HTML5 UP
+   html5up.net | @ajlkn
+   Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+   -->
+<html>
+
+   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+   <link rel="stylesheet" href="http://fortawesome.github.io/Font-Awesome/assets/font-awesome/css/font-awesome.css">
+
+   <head>
+      {% load static %}
+      <title>Sign Up Page - SoulfulArt Productions</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <!--[if lte IE 8]><script src="% static 'ie/html5shiv.js' %"></script><![endif]-->
+      <link rel="stylesheet" type = "text/css" href="{% static 'main.css' %}" />
+      <!--[if lte IE 8]>
+      <link rel="stylesheet" type = "text/css" href="{% static 'ie8.css'%}" />
+      <![endif]-->
+      <!--[if lte IE 8]>
+      <link rel="stylesheet" type = "text/css" href="{% static 'ie9.css'%}" />
+      <![endif]-->
+   </head>
+   <body>
+      <!-- Page Wrapper -->
+      <div id="page-wrapper">
+      <!-- Header -->
+      <header id="header">
+         <h1><a href="http://127.0.0.1:8000/">SoulfulArt Platform</a></h1>
+         <nav id="nav">
+            <ul>
+               <li class="special">
+                  <a href="#menu" class="menuToggle"><span>Menu</span></a>
+                  <div id="menu">
+                     <ul>
+                        <li><a href="http://127.0.0.1:8000/">Home</a></li>
+                        <li><a href="/SignIn">Sign In!</a></li>
+                        <li><a href="/User_Platform/UserPage">Your Page!</a></li>
+                        <li><a href="/SignOut">Sign Out</a></li>
+                     </ul>
+                  </div>
+               </li>
+            </ul>
+         </nav>
+      </header>
+      <!-- Main -->
+      <article id="main">
+         <header>
+            <h2>Sign Up Page</h2>
+            <p>Welcome! Here you can Sign Up on SoulfulArt Platform!</p>
+         </header>
+         <section class="wrapper style5">
+         <div class="inner">
+
+         <section>
+            <form action="create_user" method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %}
+                        class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <div class="4u 12u$(small)"></div>
+            Upload Photo
+            <div class="4u 12u$(small)"></div> 
+            <input type="file"
+            name="profilepic"
+            id="profilepic"
+            class="button special icon fa-download"
+            multiple/>
+            <div class="row uniform">
+            <div class="4u$ 12u$(small)"></div>
+            <div class="4u 12u$(small)">Name*</div>
+            <div class="4u$ 12u$(small)">User Name*</div>
+
+            <div class="4u 12u$(xsmall)">
+                <input
+                type="text"
+                name="full_name"
+                id="full_name"
+                value=""
+                placeholder="Name"/>
+            </div>
+
+            <div class="4u$ 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_username"
+                id="user_username"
+                value=""
+                placeholder="User Name"/>
+            </div>
+
+            <div class="4u 12u$(small)">E-mail 1*</div>
+            <div class="4u$ 12u$(small)">E-mail 2</div>
+
+            <div class="4u 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_mail1"
+                id="user_mail1"
+                value=""
+                placeholder="E-mail 1"/>
+            </div>
+
+            <div class="4u$ 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_mail2"
+                id="user_mail2"
+                value=""
+                placeholder="E-mail 2"/>
+            </div>
+
+            <div class="4u$ 12u$(small)">Phone</div>
+
+            <div class="4u$ 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_phone"
+                id="user_phone"
+                value=""
+                placeholder="Phone"/>
+            </div>
+
+            <div class="4u 12u$(small)">First Document*</div>
+            <div class="4u$ 12u$(small)">Second Document</div>
+
+            <div class="4u 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_document_1"
+                id="user_document_1"
+                value=""
+                placeholder="First Document"/>
+            </div>
+
+            <div class="4u$ 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_document_2"
+                id="user_document_2"
+                value=""
+                placeholder="Second Document"/>
+            </div>
+
+            <div class="4u 12u$(small)">Country*</div>
+            <div class="4u$ 12u$(small)">State</div>
+
+            <div class="4u 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_country"
+                id="user_country"
+                value=""
+                placeholder="Country"/>
+            </div>
+
+            <div class="4u$ 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_state"
+                id="user_state"
+                value=""
+                placeholder="State"/>
+            </div>
+
+            <div class="4u 12u$(small)">City</div>
+            <div class="4u$ 12u$(small)">District</div>
+
+            <div class="4u 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_city"
+                id="user_city"
+                value=""
+                placeholder="City"/>
+            </div>
+
+            <div class="4u$ 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_district"
+                id="user_district"
+                value=""
+                placeholder="District"/>
+            </div>
+
+            <div class="4u 12u$(small)">Number</div>
+            <div class="4u$ 12u$(small)">Zip Code</div>
+
+            <div class="4u 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_street_number"
+                id="user_street_number"
+                value=""
+                placeholder="Number"/>
+            </div>
+
+            <div class="4u$ 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_zip_code"
+                id="user_zip_code"
+                value=""
+                placeholder="Zip Code"/>
+            </div>
+
+            <div class="4u$ 12u$(small)">Street name</div>
+
+            <div class="8u$ 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_street"
+                id="user_street"
+                value=""
+                placeholder="Street"/>
+            </div>
+
+            <div class="4u 12u$(xsmall)">
+            Birthday
+            </div>
+            <div class="4u$ 12u$(xsmall)">
+            <input
+            type="date"
+            name="user_birth"
+            id="user_birth"
+            />
+            </div>
+
+            <div class="6u$ 12u$(small)">
+            <input type="checkbox"
+            id="user_wants_news"
+            name="user_wants_news">
+            <label for="user_wants_news">Want news and updates?</label>
+            </div>
+
+            <div class="4u 12u$(small)">Password</div>
+            <div class="4u$ 12u$(small)">Password Confirmation</div>
+
+            <div class="4u 12u$(xsmall)">
+                <input
+                type="password"
+                name="user_pass0"
+                id="user_pass0"
+                value=""/>
+            </div>
+
+            <div class="4u$ 12u$(xsmall)">
+                <input
+                type="password"
+                name="user_pass1"
+                id="user_pass1"
+                value=""/>
+            </div>
+
+            <ul class="actions vertical">
+                <li><input
+                    type="submit"
+                    value="Create"
+                    class="special"
+                    name="edit_profile"/>
+                </li>
+                <li>
+                    <a
+                    href="/Homepage/"
+                    class="button special"
+                    name="home_page_button"/>Home Page
+                    </a>
+                </li>
+            </ul>
+
+            </div> <!-- Profile Form End-->
+
+            </form> <!-- update_form end-->
+
+            </section>
+            </section>
+
+      </article>
+      <!-- Footer -->
+      <footer id="footer">
+      <ul class="icons">
+      <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+      <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+      <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+      <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+      <li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+      </ul>
+      <ul class="copyright">
+      <li>&copy; SoulfulArt Platform</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      </ul>
+      </footer>
+      </div>
+      <!-- Scripts -->
+      <script src="{% static 'jquery.min.js' %}"></script>
+      <script src="{% static 'jquery.scrollex.min.js' %}"></script>
+      <script src="{% static 'jquery.scrolly.min.js' %}"></script>
+      <script src="{% static 'skel.min.js' %}"></script>
+      <script src="{% static 'util.js' %}"></script>
+      <!--[if lte IE 8]><script src="{% static 'ie/respond.min.js' %}"></script><![endif]-->
+      <script src="{% static 'main.js' %}"></script>
+   </body>
+</html>
