@@ -14,7 +14,7 @@ def index(request):
 	#user data used for change bug former accoringly to user type
 	user_data = User.objects.all()
 	user = request.user
-	print(user.username)
+	print("user profile"+user.username)
 	user_session = user_data.filter(user_username__exact=user.username)
 
 	#convert date stored on DB to html format

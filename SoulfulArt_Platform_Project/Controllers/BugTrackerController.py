@@ -197,7 +197,7 @@ def bugtrackerform(request):
 
 	#Crate bug action
 	if (create_bug):
-		insert_bug(request, s3, file_local)
+		insert_bug(request, s3, file_local, user_session)
 		bugs_list = Bug.objects.all() #list of all bug on database
 
 	#clean filter
@@ -279,7 +279,7 @@ def bugtrackerform(request):
 	else:
 		return render(request, 'SignIn.html', context)
 
-def insert_bug(request, s3, file_local):
+def insert_bug(request, s3, file_local, user_session):
 
 	bucket_name = 'soulfulplatform'
 
@@ -308,9 +308,8 @@ def insert_bug(request, s3, file_local):
 	bug_conclusion_description = None,\
 	bug_status = 'New',\
 	bug_project = bug_project_id,\
-	bug_collaborator_creator = None,\
-	bug_owner = None,\
-	bug_user_creator = None
+	bug_creator = User.objects.get(id = user_session[0].id),\
+	bug_owner = None
 	)
 
 	new_bug.save()
@@ -400,9 +399,8 @@ def edit_bug(request):
 
 			bug_current.bug_files = None
 			bug_current.bug_impact_other_projects = impact
-			bug_current.bug_collaborator_creator = None
+			bug_current.bug_creator = None
 			bug_current.bug_owner = None
-			bug_current.bug_user_creator = None
 
 			bug_current.save()
 

@@ -743,7 +743,7 @@ def dowload_bug_file(request):
 
 	bucket_name = 'soulfulplatform'
 
-	path_file = str(request.path).replace('BugTracker/download/','')
+	path_file = str(request.path).replace('User_Platform/BugTracker/download/','')
 	path_file = 'BugsFiles'+path_file
 
 	file_name = path_file[path_file.rfind('/')+1:len(path_file)]

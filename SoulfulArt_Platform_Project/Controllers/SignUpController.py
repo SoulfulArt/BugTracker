@@ -66,12 +66,17 @@ def create_user(request):
 		request.POST.get("user_pass0")
 		)
 
+		user_new_django.save()
+
 		messages.success(request, 'User Created!')
 
 		#login new user
 		user_auth = authenticate(request,\
 		username=user_new.user_username,\
 		password=request.POST.get("user_pass0"))
+
+		if user_auth is not None:
+			login(request, user_auth)
 
 		return HttpResponseRedirect('/User_Platform/Profile')
 
