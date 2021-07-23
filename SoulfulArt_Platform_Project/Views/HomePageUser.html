@@ -32,10 +32,21 @@ Spectral by HTML5 UP
 									<a href="#menu" class="menuToggle"><span>Menu</span></a>
 									<div id="menu">
 										<ul>
+
 											<li><a href="http://127.0.0.1:8000/">Home Page</a></li>
+                                            <li><a href="Profile">Profile</a></li>
 											<li><a href="BugTracker">Bug Tracker</a></li>
-											<li><a href="Profile">Profile</a></li>
+											<li {{adm_tag}}>
+											<a href="/CreateDep/">Departments</a>
+											</li>
+											<li {{adm_tag}}>
+											<a href="/CreateFunc/">Functions</a>
+											</li>
+										    <li {{adm_tag}}>
+											<a href="/CreateProj/">Projects</a>
+											</li>
 											<li><a href="/SignOut">Sign Out</a></li>
+
 										</ul>
 									</div>
 								</li>
@@ -46,7 +57,7 @@ Spectral by HTML5 UP
 				<!-- Banner -->
 					<section id="banner">
 						<div class="inner">
-							<h2>Welcome {{user_Wion.0.user_name}}!</h2>
+							<h2>Welcome {{user_session.0.user_name}}!</h2>
 							<p>Here you can edit your profile, check bugs you reported and know more about the projects and services of SoulfulArt Platform.<br />
 							<p>Click on the Menu to start!<br />
 

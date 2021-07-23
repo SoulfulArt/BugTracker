@@ -22,6 +22,7 @@ from Controllers import ProjectShowNameController
 from Controllers import HomeController
 from Controllers import CreateDepController
 from Controllers import CreateFuncController
+from Controllers import CreateProjectController
 from Controllers import BugTrackerController
 from Controllers import SignInController
 from Controllers import SignOutController
@@ -48,6 +49,8 @@ urlpatterns = [
     path('HomePage/', HomeController.index),
     path('CreateDep/', CreateDepController.index),
     path('CreateFunc/', CreateFuncController.index),
+    path('CreateProj/', CreateProjectController.index),
+    path('CreateProj/update_form', CreateProjectController.funcform),
     path('User_Platform/BugTracker/update_form', BugTrackerController.bugtrackerform),
     re_path(r'User_Platform/BugTracker/download/*/*', BugTrackerController.dowload_bug_file),
     path('CreateDep/update_form', CreateDepController.deptrackerform),

@@ -15,8 +15,16 @@ def index(request):
     user = request.user
     user_session = user_data.filter(user_username__exact=user.username)
 
+
+    #variable that hidde tags that are only viewed by admin
+    adm_tag = "hidden"
+
+    if (user_session[0].user_type=="Admin"):
+        adm_tag = ""
+
     context={
-        'user_session': user_session
+        'user_session': user_session,
+        'adm_tag': adm_tag 
     }
 
     if request.user.is_authenticated:

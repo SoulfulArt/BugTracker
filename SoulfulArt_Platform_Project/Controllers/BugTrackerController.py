@@ -314,13 +314,14 @@ def insert_bug(request, s3, file_local, user_session):
 
 	new_bug.save()
 
-	data = file_local['file-bug-new']
-	key_file = 'BugsFiles/'+str(new_bug.id)+'/'+str(data)
+	if file_local:
+		data = file_local['file-bug-new']
+		key_file = 'BugsFiles/'+str(new_bug.id)+'/'+str(data)
 
-	s3.Bucket(bucket_name).put_object(Key=key_file, Body=data)
+		s3.Bucket(bucket_name).put_object(Key=key_file, Body=data)
 
-	new_bug.bug_files = str(file_local['file-bug-new'])
-	new_bug.save()
+		new_bug.bug_files = str(file_local['file-bug-new'])
+		new_bug.save()
 
 def edit_bug(request):
 

@@ -33,11 +33,10 @@
                   <a href="#menu" class="menuToggle"><span>Menu</span></a>
                   <div id="menu">
                      <ul>
-                        <li><a href="http://127.0.0.1:8000">Home</a></li>
-                        <li><a href="../Shared/generic.html">Generic</a></li>
-                        <li><a href="elements.html">Elements</a></li>
-                        <li><a href="#">Sign Up</a></li>
-                        <li><a href="#">Log In</a></li>
+                        <li><a href="http://127.0.0.1:8000/">Home</a></li>
+                        <li><a href="/User_Platform/UserPage">Your Page!</a></li>
+                        <li><a href="/User_Platform/Profile">Profile</a></li>
+                        <li><a href="/SignOut">Sign Out</a></li>
                      </ul>
                   </div>
                </li>
@@ -48,7 +47,7 @@
       <article id="main">
          <header>
             <h2>Create Function</h2>
-            <p>Welcome to Create Function. Here you can see and edit all the departments of our company.</p>
+            <p>Welcome to Create Function. Here you can see and edit all the functions of our company.</p>
          </header>
          <section class="wrapper style5">
          <div class="inner">
@@ -68,6 +67,7 @@
                            name="func_per_page"
                            id="func_per_page"
                            onchange="form.submit()">
+                           <option value={{func_per_page}} hidden>{{func_per_page}}</option>
                            <option value="5">5</option>
                            <option value="10">10</option>
                            <option value="15">15</option>

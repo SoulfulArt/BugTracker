@@ -14,7 +14,6 @@ def index(request):
 	#user data used for change bug former accoringly to user type
 	user_data = User.objects.all()
 	user = request.user
-	print("user profile"+user.username)
 	user_session = user_data.filter(user_username__exact=user.username)
 
 	#convert date stored on DB to html format
@@ -65,6 +64,9 @@ def update_user(request):
 		key_file = 'UserFiles/ProfilePics/user_'+str(user_session.id)+'_profilepic'
 		s3.Bucket(bucket_name).put_object(Key=key_file, Body=data)
 		user_session.user_photo = 'user_'+str(user_session.id)+'_profilepic'
+
+		#remove old pic that was on the server
+		remove("Content/images/users/"+user_session.user_photo)
 
 	if (request.POST.get("full_name")!=None and\
 	request.POST.get("full_name")!=""):
@@ -147,7 +149,7 @@ def update_user(request):
 	if user.is_authenticated:
 			return HttpResponseRedirect('/User_Platform/Profile')
 	else:
-		return render(request, 'SignIn.html', context)
+		return HttpResponseRedirect('/SignIn')
 
 class PageProperties:
 

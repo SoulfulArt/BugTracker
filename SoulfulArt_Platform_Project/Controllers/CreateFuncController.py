@@ -2,6 +2,7 @@ from Models_MVC.models import Function
 from Models_MVC.models import FunctionLevel
 from django.shortcuts import render
 from datetime import datetime
+from Controllers.ControllerFunctions import login_test
 
 def index(request):
 
@@ -48,7 +49,10 @@ def index(request):
 	'number_of_func': number_of_func
 	}
 
-	return render(request, 'CreateFunc.html', context)
+	if login_test(request, User):
+	    return render(request, 'CreateFunc.html', context)
+	else:
+	    return render(request, 'SignIn.html', context)
 
 def funcform(request):
 
@@ -172,7 +176,10 @@ def funcform(request):
 	'number_of_func': number_of_func
 	}
 
-	return render(request, 'CreateFunc.html', context)
+	if login_test(request, User):
+	    return render(request, 'CreateFunc.html', context)
+	else:
+	    return render(request, 'SignIn.html', context)
 
 def insert_func(request):
 

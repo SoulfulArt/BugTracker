@@ -1,6 +1,8 @@
 from Models_MVC.models import Department
+from Models_MVC.models import User
 from django.shortcuts import render
 from datetime import datetime
+from Controllers.ControllerFunctions import login_test
 
 def index(request):
 
@@ -44,7 +46,11 @@ def index(request):
 	'number_of_dep': number_of_dep
 	}
 
-	return render(request, 'CreateDep.html', context)
+	if login_test(request, User):
+	    return render(request, 'CreateDep.html', context)
+	else:
+	    return render(request, 'SignIn.html', context)
+
 
 def deptrackerform(request):
 
@@ -165,7 +171,10 @@ def deptrackerform(request):
 	'number_of_dep': number_of_dep
 	}
 
-	return render(request, 'CreateDep.html', context)
+	if login_test(request, User):
+	    return render(request, 'CreateDep.html', context)
+	else:
+	    return render(request, 'SignIn.html', context)
 
 def insert_dep(request):
 

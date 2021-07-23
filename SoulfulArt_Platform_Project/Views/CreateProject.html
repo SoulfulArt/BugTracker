@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE HTML>
+<!--
+   Spectral by HTML5 UP
+   html5up.net | @ajlkn
+   Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+   -->
+<html>
+   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+   <link rel="stylesheet" href="http://fortawesome.github.io/Font-Awesome/assets/font-awesome/css/font-awesome.css">
+   <head>
+      {% load static %}
+      <title>Create Project - SoulfulArt Productions</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <!--[if lte IE 8]><script src="% static 'ie/html5shiv.js' %"></script><![endif]-->
+      <link rel="stylesheet" type = "text/css" href="{% static 'main.css' %}" />
+      <!--[if lte IE 8]>
+      <link rel="stylesheet" type = "text/css" href="{% static 'ie8.css'%}" />
+      <![endif]-->
+      <!--[if lte IE 8]>
+      <link rel="stylesheet" type = "text/css" href="{% static 'ie9.css'%}" />
+      <![endif]-->
+   </head>
+   <body>
+      <!-- Page Wrapper -->
+      <div id="page-wrapper">
+         <!-- Header -->
+         <header id="header">
+            <h1><a href="http://127.0.0.1:8000/">SoulfulArt Platform</a></h1>
+            <nav id="nav">
+               <ul>
+                  <li class="special">
+                     <a href="#menu" class="menuToggle"><span>Menu</span></a>
+                     <div id="menu">
+                        <ul>
+                           <li><a href="http://127.0.0.1:8000/">Home</a></li>
+                           <li><a href="/User_Platform/UserPage">Your Page!</a></li>
+                           <li><a href="/User_Platform/Profile">Profile</a></li>
+                           <li><a href="/SignOut">Sign Out</a></li>
+                        </ul>
+                     </div>
+                  </li>
+               </ul>
+            </nav>
+         </header>
+         <!-- Main -->
+         <article id="main">
+            <header>
+               <h2>Create Project</h2>
+               <p>Welcome to Create Project. Here you can see and edit all projects of our company.</p>
+            </header>
+            <section class="wrapper style5">
+               <div class="inner">
+                  <h3>All Projects</h3>
+                  <form action="update_form" method="post">
+                     {% csrf_token %}
+                     <div class="row uniform">
+                        <div class="2u 6u$(xsmall)">
+                           Number of projects per page
+                        </div>
+                        <div class="1u 6u$(xsmall)">
+                           <select
+                              name="proj_per_page"
+                              id="proj_per_page"
+                              onchange="form.submit()">
+                              <option value={{proj_per_page}} hidden>{{proj_per_page}}</option>
+                              <option value="5">5</option>
+                              <option value="10">10</option>
+                              <option value="15">15</option>
+                              <option value="20">20</option>
+                           </select>
+                        </div>
+                        <div class="1u 6u$(xsmall)" {{show_clean_filter}}>
+                        <input class="button"
+                           name="clean_filter"
+                           Value="Clean Filter"
+                           type="submit">
+                     </div>
+                     <!-- jump line-->
+                     <div class="1u$ 6u$(xsmall)"></div>
+                     <div class="1u$ 6u$(xsmall)"></div>
+               </div>
+               <!-- table header div wrap-->
+               <h4>Actions</h4>
+               <!-- use menu as form fields-->
+               <div class="6u 12u$(xsmall)">
+               <a href="#menu"><h5>Edit</h5></a>
+               <a href="#menufilter"><h5>Filter</h5></a>
+               <a href="#menunew"><h5>New</h5></a>
+               <a href="#menudelete"><h5>Delete</h5></a>
+               <div class="table-wrapper">
+               <table class="alt">
+               <thead>
+               <tr>
+               <th>
+               <input
+               type="checkbox"
+               id="select-all-department"
+               name="select-all-department"
+               onchange="form.submit()"
+               {{select_all_proj}}>
+               <label for="select-all-department"></label>
+               </th>
+               <th>Name</th>
+               <th>Link</th>
+               <th>Creation Date</th>
+               <th>Update Date</th>
+               <th>Description</th>
+               <th>Manager</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr>
+               <p>{% if proj_showed %}
+               {% for proj in proj_showed %}
+               <td>
+               <input
+               type="checkbox"
+               name="{{proj.id}}"
+               id="{{proj.id}}"
+               {{select_all_proj}}
+               >
+               <label for="{{proj.id}}"></label>
+               </td>
+               <td>{{proj.project_name|default:"-"}}</td>
+               <td>{{proj.project_link|default:"-"}}</td>
+               <td>{{proj.project_creation_date|date:"d/M/Y"}}</td>
+               <td>{{proj.project_last_Update|date:"d/M/Y"}}</td>
+               <td>{{proj.project_description|default:"-"}}</td>
+               <td>{{proj.project_collaborator.user_name|default:"-"}}</td>
+               </tr>
+               {% endfor %}
+               {% else %}
+               <p>No Projects to show!</p>
+               {% endif %}</p>
+               </tbody>
+               <tfoot>
+               <tr>
+               <td>
+               <div class="10u$ 3u$(xsmall)">Page
+               <select
+                  name="select_current_page"
+                  id="current_page"
+                  onchange="form.submit()"
+                  >
+               <option
+                  value={{current_page}}
+                  hidden>{{current_page}}</option>
+               {% for i in number_of_pages|rjust:number_of_pages %}
+               <option
+                  value={{forloop.counter}}>
+               {{forloop.counter}}
+               </option>
+               {% endfor %}
+               </div>
+               </td>
+               <td>
+               <div class="3u$ 3u$(xsmall)">of
+               <select
+                  name="number_page"
+                  id="current_page">
+               <option
+                  value={{number_of_pages}}
+                  hidden>{{number_of_pages}}</option>
+               </td>
+               </tr>
+               </div>
+               <td>
+               <tr>
+               <td colspan="2">Number of projects listed:
+               <h4>{{number_of_proj}}</h4></td>
+               </tr>
+               </tfoot>
+               </table>
+               </div> <!--table div-->
+               <!-- Edit Project Form Begin-->
+               <h4 {{edit_fields}}>Edit Selected Projects With</h4>
+               <div class="row uniform" {{edit_fields}}>
+               <div class="6u$ 12u$(xsmall)">
+               <input type="text" name="proj_name_edit" id="proj_name" value="" placeholder="Name"/>
+               </div>
+               <div class="2u$ 12u$(xsmall)">
+               <select
+                  name="proj_level_edit"
+                  id="proj_level_edit"
+                  >
+               <option value="-">
+               -
+               </option>
+               {% for level in proj_levels %}
+               <option value={{level.proj_level}}>
+               {{level.proj_level}}
+               </option>
+               {% endfor %}
+               </select>
+               </div>
+               <div class="2u 12u$(small)">
+               Active?
+               </div>
+               <div class="2u 12u$(small)">
+               <input type="radio" id="active_proj_edit_yes" name="active_proj_edit" value="Yes">
+               <label for="active_proj_edit_yes">Yes</label>
+               </div>
+               <div class="2u$ 12u$(small)">
+               <input type="radio" id="active_proj_edit_no" name="active_proj_edit" value="No">
+               <label for="active_proj_edit_no">No</label>
+               </div>
+               <div class="2u 12u$(small)">
+               Manager?
+               </div>
+               <div class="2u 12u$(small)">
+               <input type="radio" id="manager_proj_edit_yes" name="manager_proj_edit" value="Yes">
+               <label for="manager_proj_edit_yes">Yes</label>
+               </div>
+               <div class="2u$ 12u$(small)">
+               <input type="radio" id="manager_proj_edit_no" name="manager_proj_edit" value="No">
+               <label for="manager_proj_edit_no">No</label>
+               </div>
+               <div class="12u$">
+               <ul class="actions">
+               <li><input type="submit" value="Edit" class="special" name="edit_proj"/></li>
+               <li><input type="submit" value="Cancel" name="cancel_edit_proj"/></li>
+               </ul>
+               </div>
+               </div>
+               <!-- Edit Project Form End-->
+               <!-- Create new Project Form Beging-->
+               <h4 {{new_proj_fields}}>Create New Project</h4>
+               <div class="row uniform"{{new_proj_fields}}>
+               <div class="6u$ 12u$(xsmall)">
+               <input type="text" name="proj_name" id="proj_name" value="" placeholder="Name"/>
+               </div>
+               <div class="2u$ 12u$(xsmall)">
+               <select
+                  name="proj_level_new"
+                  id="proj_level_new"
+                  >
+               {% for level in proj_levels %}
+               <option value={{level.proj_level}}>
+               {{level.proj_level}}
+               </option>
+               {% endfor %}
+               </select>
+               </div>
+               <div class="6u$ 12u$(small)">
+               <input type="checkbox" id="active_proj" name="active_proj">
+               <label for="active_proj">Active?</label>
+               </div>
+               <div class="6u$ 12u$(small)">
+               <input type="checkbox" id="manager_proj" name="manager_proj">
+               <label for="manager_proj">Manager function?</label>
+               </div>
+               <div class="12u$">
+               <ul class="actions">
+               <li><input type="submit" value="Create Project" class="special" name="create_proj"/></li>
+               <li><input type="reset" value="Reset" /></li>
+               </ul>
+               </div>
+      </div>
+      <!-- Create new Project Form End-->
+      <!-- Filter Project Form Begin-->
+      <h4 {{filter_fields}}>Filter Projects With</h4>
+      <div class="row uniform"{{filter_fields}}>
+      <div class="6u$ 12u$(xsmall)">
+      <input
+         type="text"
+         name="proj_name_filter"
+         id="proj_name"
+         placeholder="{{filter_values_view.proj_name_filter|default:'Name'}}"/>
+      </div>
+      <div class="6u$ 12u$(xsmall)">
+      <input
+         type="text"
+         name="proj_phone_filter"
+         id="proj_phone"
+         placeholder="{{filter_values_view.proj_phone_filter|default:'Phone'}}"/>
+      </div>
+      <div class="2u 12u$(small)">
+      Active?
+      </div>
+      <div class="2u 12u$(small)">
+      <input
+      type="checkbox"
+      id="active_proj_filter_yes"
+      name="active_filter_yes"
+      {{filter_values_view.active_filter_yes}}>
+      <label for="active_proj_filter_yes">Yes</label>
+      </div>
+      <div class="2u$ 12u$(small)">
+      <input
+      type="checkbox"
+      id="active_proj_filter_no"
+      name="active_filter_no"
+      {{filter_values_view.active_filter_no}}>
+      <label for="active_proj_filter_no">No</label>
+      </div>
+      <div class="12u$">
+      <ul class="actions">
+      <li><input type="submit" value="Filter Apply" class="special" name="filter_proj"/></li>
+      <li><input type="submit" value="Cancel" name="cancel_edit_proj"/></li>
+      </ul>
+      </div>
+      </div>
+      <!-- Filter Project Form End-->
+      </form> <!-- update_form end-->
+      </section>
+      </div> <!-- inner div-->
+      </div>
+      </article>
+      <!-- Footer -->
+      <footer id="footer">
+         <ul class="icons">
+            <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+            <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+            <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+            <li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+         </ul>
+         <ul class="copyright">
+            <li>&copy; SoulfulArt Platform</li>
+            <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+         </ul>
+      </footer>
+      <!-- Scripts -->
+      <script src="{% static 'jquery.min.js' %}"></script>
+      <script src="{% static 'jquery.scrollex.min.js' %}"></script>
+      <script src="{% static 'jquery.scrolly.min.js' %}"></script>
+      <script src="{% static 'skel.min.js' %}"></script>
+      <script src="{% static 'util.js' %}"></script>
+      <!--[if lte IE 8]><script src="{% static 'ie/respond.min.js' %}"></script><![endif]-->
+      <script src="{% static 'main.js' %}"></script>
+   </body>
+</html>
+
+
