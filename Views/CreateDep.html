@@ -1,0 +1,335 @@
+<!DOCTYPE HTML>
+<!--
+   Spectral by HTML5 UP
+   html5up.net | @ajlkn
+   Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+   -->
+<html>
+   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+   <link rel="stylesheet" href="http://fortawesome.github.io/Font-Awesome/assets/font-awesome/css/font-awesome.css">
+   <head>
+      {% load static %}
+      <title>Create Department - SoulfulArt Productions</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <!--[if lte IE 8]><script src="% static 'ie/html5shiv.js' %"></script><![endif]-->
+      <link rel="stylesheet" type = "text/css" href="{% static 'main.css' %}" />
+      <!--[if lte IE 8]>
+      <link rel="stylesheet" type = "text/css" href="{% static 'ie8.css'%}" />
+      <![endif]-->
+      <!--[if lte IE 8]>
+      <link rel="stylesheet" type = "text/css" href="{% static 'ie9.css'%}" />
+      <![endif]-->
+   </head>
+   <body>
+      <!-- Page Wrapper -->
+      <div id="page-wrapper">
+      <!-- Header -->
+      <header id="header">
+         <h1><a href="http://127.0.0.1:8000/">SoulfulArt Platform</a></h1>
+         <nav id="nav">
+            <ul>
+               <li class="special">
+                  <a href="#menu" class="menuToggle"><span>Menu</span></a>
+                  <div id="menu">
+                     <ul>
+                        <li><a href="http://127.0.0.1:8000/">Home</a></li>
+                        <li><a href="/User_Platform/UserPage">Your Page!</a></li>
+                        <li><a href="/User_Platform/Profile">Profile</a></li>
+                        <li><a href="/SignOut">Sign Out</a></li>
+                     </ul>
+                  </div>
+               </li>
+            </ul>
+         </nav>
+      </header>
+      <!-- Main -->
+      <article id="main">
+         <header>
+            <h2>Create Department</h2>
+            <p>Welcome to Create Department. Here you can see and edit all the departments of our company.</p>
+         </header>
+         <section class="wrapper style5">
+         <div class="inner">
+            <section>
+               <h3>All Departments</h3>
+               <div class="row uniform">
+                  <div class="2u 6u$(xsmall)">
+                     Number of departments per page
+                  </div>
+
+                  <div class="1u 6u$(xsmall)">
+
+                  <form action="update_form" method="post">
+                  {% csrf_token %}
+
+                        <select
+                           name="dep_per_page"
+                           id="dep_per_page"
+                           onchange="form.submit()">
+                           <option value={{dep_per_page}} hidden>{{dep_per_page}}</option>
+                           <option value="5">5</option>
+                           <option value="10">10</option>
+                           <option value="15">15</option>
+                           <option value="20">20</option>
+                        </select>
+                  </div>
+                  
+                  <div class="1u$ 6u$(xsmall)" {{show_clean_filter}}>
+                  <input class="button"
+                  name="clean_filter"
+                  Value="Clean Filter"
+                  type="submit">
+                  </div>
+
+               </div>
+               <div class="table-wrapper">
+               <table class="alt">
+               <thead>
+               <tr>
+               <th>
+               <input
+               type="checkbox"
+               id="select-all-department"
+               name="select-all-department"
+               onchange="form.submit()"
+               {{select_all_dep}}>
+               <label for="select-all-department"></label>
+               </th>
+               <th>Name</th>
+               <th>E-mail</th>
+               <th>Phone</th>
+               <th>Creation Date</th>
+               <th>Active</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr>
+               <p>{% if dep_showed %}
+               {% for dep in dep_showed %}
+               <td>
+               <input
+               type="checkbox"
+               name="{{dep.id}}"
+               id="{{dep.id}}"
+               {{select_all_dep}}
+               >
+               <label for="{{dep.id}}"></label>
+               </td>
+               <td>{{dep.dep_name|default:"-"}}</td>
+               <td>{{dep.dep_mail_1|truncatechars:max_char_desc|default:"-"}}</td>
+               <td>{{dep.dep_phone|default:"-"}}</td>
+               <td>{{dep.dep_creation_date|date:"d/M/Y"}}</td>
+               <td>{{dep.dep_active|default:"-"}}</td>
+               </tr>
+               {% endfor %}
+               {% else %}
+               <p>No Departments to show!</p>
+               {% endif %}</p>
+               </tbody>
+               <tfoot>
+               <tr>
+               <td>
+               <div class="10u$ 3u$(xsmall)">Page
+               <select
+                  name="select_current_page"
+                  id="current_page"
+                  onchange="form.submit()"
+                  >
+               <option
+                  value={{current_page}}
+                  hidden>{{current_page}}</option>
+               {% for i in number_of_pages|rjust:number_of_pages %}
+               <option
+                  value={{forloop.counter}}>
+               {{forloop.counter}}
+               </option>
+               {% endfor %}
+               </div>
+               </td>
+               <td>
+               <div class="3u$ 3u$(xsmall)">of
+               <select
+                  name="number_page"
+                  id="current_page">
+               <option
+                  value={{number_of_pages}}
+                  hidden>{{current_page}}</option>
+               </td>
+               </tr>
+               </div>
+               <td>
+               <tr>
+               <td colspan="2">Number of departments listed:
+               <h4>{{number_of_dep}}</h4></td>
+               </tr>
+               </tfoot>
+               </table>
+               </div>
+            </section>
+            <section>
+            <h4>Actions</h4>
+            <ul class="actions">
+            <li><input
+               value="Edit"
+               class="button"
+               name="show_edit_form"
+               type="submit"
+               ></li>
+            <li><input
+            class="button"
+            value="Filter Departments"
+            name="filter_dep_form"
+            type="submit"
+            ></li>
+            <li><input
+               value="Create New Department"
+               class="button"
+               name="create_dep_form"
+               type="submit"
+               ></li>
+            <li><input
+               value="Delete"
+               name="del_dep"
+               class="button special"
+               type="submit"></li>
+            </ul>
+            <ul class="actions">
+
+            <!-- Edit Dep Form Begin-->
+            <h4 {{edit_fields}}>Edit Selected Departments With</h4>
+            <div class="row uniform" {{edit_fields}}>
+            <div class="6u$ 12u$(xsmall)">
+            <input type="text" name="dep_name_edit" id="dep_name" value="" placeholder="Name"/>
+            </div>
+            <div class="6u$ 12u$(xsmall)">
+            <input type="text" name="dep_phone_edit" id="dep_phone" value="" placeholder="Phone"/>
+            </div>
+
+            <div class="2u 12u$(small)">
+            Active?
+            </div>
+
+            <div class="2u 12u$(small)">
+            <input type="radio" id="active_dep_edit_yes" name="active_dep_edit" value="Yes">
+            <label for="active_dep_edit_yes">Yes</label>
+            </div>
+
+            <div class="2u$ 12u$(small)">
+            <input type="radio" id="active_dep_edit_no" name="active_dep_edit" value="No">
+            <label for="active_dep_edit_no">No</label>
+            </div>
+
+            <div class="12u$">
+            <ul class="actions">
+            <li><input type="submit" value="Edit" class="special" name="edit_dep"/></li>
+            <li><input type="submit" value="Cancel" name="cancel_edit_dep"/></li>
+            </ul>
+            </div>
+
+            </div>
+            <!-- Edit Bugs Form End-->
+
+            <!-- Create new Department Form Beging-->
+            <section>
+            <h4 {{new_dep_fields}}>Create New Department</h4>
+            <div class="row uniform"{{new_dep_fields}}>
+            <div class="6u$ 12u$(xsmall)">
+            <input type="text" name="dep_name" id="dep_name" value="" placeholder="Name"/>
+            </div>
+            <div class="6u$ 12u$(xsmall)">
+            <input type="text" name="dep_phone" id="dep_phone" value="" placeholder="Phone"/>
+            </div>
+            <div class="6u$ 12u$(small)">
+            <input type="checkbox" id="demo-human" name="active_dep">
+            <label for="demo-human">Active?</label>
+            </div>
+            <div class="12u$">
+            <ul class="actions">
+            <li><input type="submit" value="Create Department" class="special" name="create_dep"/></li>
+            <li><input type="reset" value="Reset" /></li>
+            </ul>
+            </div>
+            </div>
+            <!-- Create new Department Form End-->
+
+            <!-- Filter Department Form Begin-->
+            <h4 {{filter_fields}}>Filter Departments With</h4>
+            <div class="row uniform"{{filter_fields}}>
+            <div class="6u$ 12u$(xsmall)">
+            <input
+            type="text"
+            name="dep_name_filter"
+            id="dep_name"
+            placeholder="{{filter_values_view.dep_name_filter|default:'Name'}}"/>
+            </div>
+            <div class="6u$ 12u$(xsmall)">
+            <input
+            type="text"
+            name="dep_phone_filter"
+            id="dep_phone"
+            placeholder="{{filter_values_view.dep_phone_filter|default:'Phone'}}"/>
+            </div>
+
+            <div class="2u 12u$(small)">
+            Active?
+            </div>
+
+            <div class="2u 12u$(small)">
+            <input
+            type="checkbox"
+            id="active_dep_filter_yes"
+            name="active_filter_yes"
+            {{filter_values_view.active_filter_yes}}>
+            <label for="active_dep_filter_yes">Yes</label>
+            </div>
+
+            <div class="2u$ 12u$(small)">
+            <input
+            type="checkbox"
+            id="active_dep_filter_no"
+            name="active_filter_no"
+            {{filter_values_view.active_filter_no}}>
+            <label for="active_dep_filter_no">No</label>
+            </div>
+
+            <div class="12u$">
+            <ul class="actions">
+            <li><input type="submit" value="Filter Apply" class="special" name="filter_dep"/></li>
+            <li><input type="submit" value="Cancel" name="cancel_edit_dep"/></li>
+            </ul>
+            </div>
+
+            </div>
+            <!-- Filter Department Form End-->
+
+            </form> <!-- update_form end-->
+
+            </section>
+            </section>
+
+      </article>
+      <!-- Footer -->
+      <footer id="footer">
+      <ul class="icons">
+      <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+      <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+      <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+      <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+      <li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+      </ul>
+      <ul class="copyright">
+      <li>&copy; SoulfulArt Platform</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      </ul>
+      </footer>
+      </div>
+      <!-- Scripts -->
+      <script src="{% static 'jquery.min.js' %}"></script>
+      <script src="{% static 'jquery.scrollex.min.js' %}"></script>
+      <script src="{% static 'jquery.scrolly.min.js' %}"></script>
+      <script src="{% static 'skel.min.js' %}"></script>
+      <script src="{% static 'util.js' %}"></script>
+      <!--[if lte IE 8]><script src="{% static 'ie/respond.min.js' %}"></script><![endif]-->
+      <script src="{% static 'main.js' %}"></script>
+   </body>
+</html

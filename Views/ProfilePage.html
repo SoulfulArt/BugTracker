@@ -1,0 +1,304 @@
+<!DOCTYPE HTML>
+<!--
+   Spectral by HTML5 UP
+   html5up.net | @ajlkn
+   Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+   -->
+<html>
+
+   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+   <link rel="stylesheet" href="http://fortawesome.github.io/Font-Awesome/assets/font-awesome/css/font-awesome.css">
+
+   <head>
+      {% load static %}
+      <title>Profile Page - SoulfulArt Productions</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <!--[if lte IE 8]><script src="% static 'ie/html5shiv.js' %"></script><![endif]-->
+      <link rel="stylesheet" type = "text/css" href="{% static 'main.css' %}" />
+      <!--[if lte IE 8]>
+      <link rel="stylesheet" type = "text/css" href="{% static 'ie8.css'%}" />
+      <![endif]-->
+      <!--[if lte IE 8]>
+      <link rel="stylesheet" type = "text/css" href="{% static 'ie9.css'%}" />
+      <![endif]-->
+   </head>
+   <body>
+      <!-- Page Wrapper -->
+      <div id="page-wrapper">
+      <!-- Header -->
+      <header id="header">
+         <h1><a href="http://127.0.0.1:8000/">SoulfulArt Platform</a></h1>
+         <nav id="nav">
+            <ul>
+               <li class="special">
+                  <a href="#menu" class="menuToggle"><span>Menu</span></a>
+                  <div id="menu">
+                     <ul>
+                        <li><a href="http://127.0.0.1:8000/">Home</a></li>
+                        <li><a href="/User_Platform/UserPage">Your Page!</a></li>
+                        <li><a href="/SignOut">Sign Out</a></li>
+                        <li><a href="/User_Platform/BugTracker">Bug Tracker</a></li>
+                     </ul>
+                  </div>
+               </li>
+            </ul>
+         </nav>
+      </header>
+      <!-- Main -->
+      <article id="main">
+         <header>
+            <h2>Profile Page</h2>
+            <p>Welcome {{user_session.0.user_name}}! Here you can see your data.</p>
+         </header>
+         <section class="wrapper style5">
+         <div class="inner">
+
+         <section>
+            <form action="update_form" method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %}
+                        class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <!-- Profile Form Begin-->
+            <spanclass="image left">
+                <img
+                src="/static/images/users/{{user_session.0.user_photo}}"
+                alt=""
+                width="{{page_properties.profilepic_width}}"
+                height="{{page_properties.profilepic_height}}"/>
+            </span>
+
+            <div class="4u 12u$(small)"></div>
+            Change Photo
+            <div class="4u 12u$(small)"></div> 
+            <input type="file"
+            name="profilepic"
+            id="profilepic"
+            class="button special icon fa-download"
+            multiple/>
+            <div class="row uniform">
+            <div class="4u$ 12u$(small)"></div>
+            <div class="4u 12u$(small)">Name*</div>
+            <div class="4u$ 12u$(small)">User Name*</div>
+
+            <div class="4u 12u$(xsmall)">
+                <input
+                type="text"
+                name="full_name"
+                id="full_name"
+                value=""
+                placeholder="{{user_session.0.user_name}}"/>
+            </div>
+
+            <div class="4u$ 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_username"
+                id="user_username"
+                value=""
+                placeholder="{{user_session.0.user_username}}"/>
+            </div>
+
+            <div class="4u 12u$(small)">E-mail 1*</div>
+            <div class="4u$ 12u$(small)">E-mail 2</div>
+
+            <div class="4u 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_mail1"
+                id="user_mail1"
+                value=""
+                placeholder="{{user_session.0.user_mail_1|default:"First E-mail"}}"/>
+            </div>
+
+            <div class="4u$ 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_mail2"
+                id="user_mail2"
+                value=""
+                placeholder="{{user_session.0.user_mail_2|default:"Second E-mail"}}"/>
+            </div>
+
+            <div class="4u$ 12u$(small)">Phone</div>
+
+            <div class="4u$ 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_phone"
+                id="user_phone"
+                value=""
+                placeholder="{{user_session.0.user_phone|default:"Phone Number"}}"/>
+            </div>
+
+            <div class="4u 12u$(small)">First Document</div>
+            <div class="4u$ 12u$(small)">Second Document</div>
+
+            <div class="4u 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_document_1"
+                id="user_document_1"
+                value=""
+                placeholder="{{user_session.0.user_document_1|default:"First Document"}}"/>
+            </div>
+
+            <div class="4u$ 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_document_2"
+                id="user_document_2"
+                value=""
+                placeholder="{{user_session.0.user_document_2|default:"Second Document"}}"/>
+            </div>
+
+            <div class="4u 12u$(small)">Country</div>
+            <div class="4u$ 12u$(small)">State</div>
+
+            <div class="4u 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_country"
+                id="user_country"
+                value=""
+                placeholder="{{user_session.0.user_country|default:"Country"}}"/>
+            </div>
+
+            <div class="4u$ 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_state"
+                id="user_state"
+                value=""
+                placeholder="{{user_session.0.user_state|default:"State"}}"/>
+            </div>
+
+            <div class="4u 12u$(small)">City</div>
+            <div class="4u$ 12u$(small)">District</div>
+
+            <div class="4u 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_city"
+                id="user_city"
+                value=""
+                placeholder="{{user_session.0.user_city|default:"City"}}"/>
+            </div>
+
+            <div class="4u$ 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_district"
+                id="user_district"
+                value=""
+                placeholder="{{user_session.0.user_district|default:"District"}}"/>
+            </div>
+
+            <div class="4u 12u$(small)">Number</div>
+            <div class="4u$ 12u$(small)">Zip Code</div>
+
+            <div class="4u 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_street_number"
+                id="user_street_number"
+                value=""
+                placeholder="{{user_session.0.user_street_number|default:"Number"}}"/>
+            </div>
+
+            <div class="4u$ 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_zip_code"
+                id="user_zip_code"
+                value=""
+                placeholder="{{user_session.0.user_zip_code|default:"Zip Code"}}"/>
+            </div>
+
+            <div class="4u$ 12u$(small)">Street name</div>
+
+            <div class="8u$ 12u$(xsmall)">
+                <input
+                type="text"
+                name="user_street"
+                id="user_street"
+                value=""
+                placeholder="{{user_session.0.user_street|default:"Street"}}"/>
+            </div>
+
+            <div class="4u 12u$(xsmall)">
+            Birthday
+            </div>
+            <div class="4u$ 12u$(xsmall)">
+            <input
+            type="date"
+            name="user_birth"
+            id="user_birth"
+            value="{{user_birth_front}}"/>
+            </div>
+
+            <div class="6u$ 12u$(small)">
+            <input type="checkbox"
+            id="user_wants_news"
+            name="user_wants_news"
+            {{user_wants_news}}>
+            <label for="user_wants_news">Want news and updates?</label>
+            </div>
+
+            <ul class="actions vertical">
+                <li><input
+                    type="submit"
+                    value="Edit"
+                    class="special"
+                    name="edit_profile"/>
+                </li>
+                <li>
+                    <a
+                    href="ChangePass"
+                    class="button special"
+                    name="change_password"/>Change Password
+                    </a>
+                </li>
+            </ul>
+
+            </div> <!-- Profile Form End-->
+
+            </form> <!-- update_form end-->
+
+            </section>
+            </section>
+
+      </article>
+      <!-- Footer -->
+      <footer id="footer">
+      <ul class="icons">
+      <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+      <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+      <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+      <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+      <li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+      </ul>
+      <ul class="copyright">
+      <li>&copy; SoulfulArt Platform</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      </ul>
+      </footer>
+      </div>
+      <!-- Scripts -->
+      <script src="{% static 'jquery.min.js' %}"></script>
+      <script src="{% static 'jquery.scrollex.min.js' %}"></script>
+      <script src="{% static 'jquery.scrolly.min.js' %}"></script>
+      <script src="{% static 'skel.min.js' %}"></script>
+      <script src="{% static 'util.js' %}"></script>
+      <!--[if lte IE 8]><script src="{% static 'ie/respond.min.js' %}"></script><![endif]-->
+      <script src="{% static 'main.js' %}"></script>
+   </body>
+</html>
